@@ -42,7 +42,7 @@ void jsiBatchParametersToQuickArguments(jsi::Runtime &rt, jsi::Array const &batc
   }
 }
 
-SequelBatchOperationResult sqliteExecuteBatch(std::string dbName, vector<QuickQueryArguments> *commands)
+SequelBatchOperationResult sqliteExecuteBatch(jsi::Runtime &rt, std::string dbName, vector<QuickQueryArguments> *commands)
 {
   size_t commandCount = commands->size();
   if(commandCount <= 0)
@@ -60,7 +60,7 @@ SequelBatchOperationResult sqliteExecuteBatch(std::string dbName, vector<QuickQu
     for(int i = 0; i<commandCount; i++) {
       auto command = commands->at(i);
       // We do not provide a datastructure to receive query data because we don't need/want to handle this results in a batch execution
-      auto result = sqliteExecute(dbName, command.sql, command.params.get(), NULL, NULL);
+      auto result = sqliteExecute(rt, dbName, command.sql, command.params.get(), NULL, NULL);
       if(result.type == SQLiteError)
       {
         sqliteExecuteLiteral(dbName, "ROLLBACK");

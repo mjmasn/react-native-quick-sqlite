@@ -250,7 +250,7 @@ void bindStatement(sqlite3_stmt *statement, vector<QuickValue> *values)
   }
 }
 
-SQLiteOPResult sqliteExecute(string const dbName, string const &query, vector<QuickValue> *params, vector<map<string, QuickValue>> *results, vector<QuickColumnMetadata> *metadata)
+SQLiteOPResult sqliteExecute(jsi::Runtime &rt, string const dbName, string const &query, vector<QuickValue> *params, vector<jsi::Object> *results, vector<QuickColumnMetadata> *metadata)
 {
 
   if (dbMap.count(dbName) == 0)
@@ -286,7 +286,8 @@ SQLiteOPResult sqliteExecute(string const dbName, string const &query, vector<Qu
 
   int result, i, count, column_type;
   string column_name, column_declared_type;
-  map<string, QuickValue> row;
+  const char* colName;
+  jsi::Array row = jsi::Array(rt, 0);
 
   while (isConsuming)
   {
@@ -301,13 +302,15 @@ SQLiteOPResult sqliteExecute(string const dbName, string const &query, vector<Qu
         }
 
         i = 0;
-        row = map<string, QuickValue>();
         count = sqlite3_column_count(statement);
+        row = jsi::Array(rt, count);
 
         while (i < count)
         {
           column_type = sqlite3_column_type(statement, i);
           column_name = sqlite3_column_name(statement, i);
+
+          colName = column_name.c_str();
 
           switch (column_type)
           {
@@ -321,41 +324,42 @@ SQLiteOPResult sqliteExecute(string const dbName, string const &query, vector<Qu
                *
                * See https://github.com/margelo/react-native-quick-sqlite/issues/16 for more context.
                */
-              double column_value = sqlite3_column_double(statement, i);
-              row[column_name] = createIntegerQuickValue(column_value);
+              row.setValueAtIndex(rt, i, sqlite3_column_double(statement, i));
               break;
             }
 
             case SQLITE_FLOAT:
             {
-              double column_value = sqlite3_column_double(statement, i);
-              row[column_name] = createDoubleQuickValue(column_value);
+              row.setValueAtIndex(rt, i, sqlite3_column_double(statement, i));
               break;
             }
 
             case SQLITE_TEXT:
             {
               const char *column_value = reinterpret_cast<const char *>(sqlite3_column_text(statement, i));
-              int byteLen = sqlite3_column_bytes(statement, i);
-              // Specify length too; in case string contains NULL in the middle (which SQLite supports!)
-              row[column_name] = createTextQuickValue(string(column_value, byteLen));
+
+              if (column_value) {
+                row.setValueAtIndex(rt, i, jsi::String::createFromUtf8(rt, column_value));
+              } else {
+                row.setValueAtIndex(rt, i, jsi::Value::null());
+              }
               break;
             }
 
-            case SQLITE_BLOB:
-            {
-              int blob_size = sqlite3_column_bytes(statement, i);
-              const void *blob = sqlite3_column_blob(statement, i);
-              uint8_t *data = new uint8_t[blob_size];
-              memcpy(data, blob, blob_size);
-              row[column_name] = createArrayBufferQuickValue(data, blob_size);
-              break;
-            }
+            // case SQLITE_BLOB:
+            // {
+            //   int blob_size = sqlite3_column_bytes(statement, i);
+            //   const void *blob = sqlite3_column_blob(statement, i);
+            //   uint8_t *data = new uint8_t[blob_size];
+            //   memcpy(data, blob, blob_size);
+            //   row[column_name] = createArrayBufferQuickValue(data, blob_size);
+            //   break;
+            // }
 
             case SQLITE_NULL:
               // Intentionally left blank to switch to default case
             default:
-              row[column_name] = createNullQuickValue();
+                row.setValueAtIndex(rt, i, jsi::Value::null());
               break;
           }
           i++;

@@ -186,12 +186,12 @@ void install(jsi::Runtime &rt, std::shared_ptr<react::CallInvoker> jsCallInvoker
       jsiQueryArgumentsToSequelParam(rt, originalParams, &params);
     }
 
-    vector<map<string, QuickValue>> results;
+    vector<jsi::Object> results;
     vector<QuickColumnMetadata> metadata;
 
     // Converting results into a JSI Response
     try {
-      auto status = sqliteExecute(dbName, query, &params, &results, &metadata);
+      auto status = sqliteExecute(rt, dbName, query, &params, &results, &metadata);
 
       if(status.type == SQLiteError) {
 //        throw std::runtime_error(status.errorMessage);
@@ -199,7 +199,15 @@ void install(jsi::Runtime &rt, std::shared_ptr<react::CallInvoker> jsCallInvoker
 //        return {};
       }
 
-      auto jsiResult = createSequelQueryExecutionResult(rt, status, &results, &metadata);
+        jsi::Array ar = jsi::Array(rt, results.size());
+
+        int i = 0;
+        for (auto const& result : results) {
+          ar.setValueAtIndex(rt, i, move(result));
+          i++;
+        }
+
+      auto jsiResult = createSequelQueryExecutionResult(rt, status, ar, &metadata);
       return jsiResult;
     } catch(std::exception &e) {
       throw jsi::JSError(rt, e.what());
@@ -231,17 +239,28 @@ void install(jsi::Runtime &rt, std::shared_ptr<react::CallInvoker> jsCallInvoker
       {
         try
         {
-          vector<map<string, QuickValue>> results;
-          vector<QuickColumnMetadata> metadata;
-          auto status = sqliteExecute(dbName, query, params.get(), &results, &metadata);
-          invoker->invokeAsync([&rt, results = make_shared<vector<map<string, QuickValue>>>(results), metadata = make_shared<vector<QuickColumnMetadata>>(metadata), status_copy = move(status), resolve, reject]
+
+
+          invoker->invokeAsync([&rt, dbName, query, params, resolve, reject]
                                {
-            if(status_copy.type == SQLiteOk) {
-              auto jsiResult = createSequelQueryExecutionResult(rt, status_copy, results.get(), metadata.get());
+
+          vector<jsi::Object> results;
+          vector<QuickColumnMetadata> metadata;
+          auto status = sqliteExecute(rt, dbName, query, params.get(), &results, &metadata);
+            if(status.type == SQLiteOk) {
+        jsi::Array ar = jsi::Array(rt, results.size());
+
+        int i = 0;
+        for (auto const& result : results) {
+          ar.setValueAtIndex(rt, i, move(result));
+          i++;
+        }
+
+              auto jsiResult = createSequelQueryExecutionResult(rt, status, ar, &metadata);
               resolve->asObject(rt).asFunction(rt).call(rt, move(jsiResult));
             } else {
               auto errorCtr = rt.global().getPropertyAsFunction(rt, "Error");
-              auto error = errorCtr.callAsConstructor(rt, jsi::String::createFromUtf8(rt, status_copy.errorMessage));
+              auto error = errorCtr.callAsConstructor(rt, jsi::String::createFromUtf8(rt, status.errorMessage));
               reject->asObject(rt).asFunction(rt).call(rt, error);
             }
           });
@@ -282,7 +301,7 @@ void install(jsi::Runtime &rt, std::shared_ptr<react::CallInvoker> jsCallInvoker
     vector<QuickQueryArguments> commands;
     jsiBatchParametersToQuickArguments(rt, batchParams, &commands);
 
-    auto batchResult = sqliteExecuteBatch(dbName, &commands);
+    auto batchResult = sqliteExecuteBatch(rt, dbName, &commands);
     if (batchResult.type == SQLiteOk)
     {
       auto res = jsi::Object(rt);
@@ -328,9 +347,9 @@ void install(jsi::Runtime &rt, std::shared_ptr<react::CallInvoker> jsCallInvoker
         try
         {
           // Inside the new worker thread, we can now call sqlite operations
-          auto batchResult = sqliteExecuteBatch(dbName, commands.get());
-          invoker->invokeAsync([&rt, batchResult = move(batchResult), resolve, reject]
+          invoker->invokeAsync([&rt, dbName, commands, resolve, reject]
                                {
+          auto batchResult = sqliteExecuteBatch(rt, dbName, commands.get());
             if(batchResult.type == SQLiteOk)
             {
               auto res = jsi::Object(rt);
