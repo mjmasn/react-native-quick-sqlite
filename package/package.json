@@ -25,8 +25,7 @@
   "scripts": {
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\" --fix",
-    "prepare": "rm -rf lib && bun typescript && bob build",
-    "release": "bun prepare && release-it"
+    "prepare": "rm -rf lib && bun typescript && bob build"
   },
   "keywords": [
     "react-native",
