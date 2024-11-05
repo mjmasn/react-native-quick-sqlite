@@ -25,7 +25,7 @@
     "typescript": "bun --filter=\"**\" typescript",
     "lint": "bun package lint && bun example lint",
     "bootstrap": "bun install && bun package prepare && bun example pods",
-    "release": "bun package prepare && release-it",
+    "release": "release-it",
     "clean": "rm -rf **/tsconfig.tsbuildinfo node_modules package/node_module package/lib"
   },
   "dependencies": {
@@ -56,6 +56,11 @@
     },
     "github": {
       "release": true
+    },
+    "hooks": {
+      "before:init": "bun typescript && bun lint",
+      "before:bump": "bun example pods",
+      "after:bump": "bun package prepare"
     },
     "plugins": {
       "@release-it-plugins/workspaces": true,
