@@ -336,10 +336,6 @@ To use an app group, add the app group ID as the value for the `RNNitroSQLite_Ap
 
 [Join the Margelo Community Discord](https://discord.gg/6CSHz2qAvA) to chat about react-native-nitro-sqlite or other Margelo libraries.
 
-## Oscar
-
-react-native-nitro-sqlite was originally created by [Oscar Franco](https://github.com/ospfranco). Thanks Oscar!
-
 ## License
 
 MIT License.
