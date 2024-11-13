@@ -104,7 +104,7 @@
             },
             {
               "type": "chore",
-              "section": "🛠️ Project configuration and build flow"
+              "section": "🏗️ Project configuration and build flow"
             },
             {
               "type": "chore(deps)",
