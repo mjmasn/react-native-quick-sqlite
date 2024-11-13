@@ -1,6 +1,4 @@
-
-
-# React Native Nitro SQLite (`react-native-nitro-sqlite`)
+# `react-native-nitro-sqlite`
 
 > [!IMPORTANT]
 > `react-native-quick-sqlite` has been deprecated in favor of this new [Nitro module](https://nitro.margelo.com/) implementation.
