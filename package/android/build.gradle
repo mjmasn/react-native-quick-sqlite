@@ -1,6 +1,6 @@
 buildscript {
   // Buildscript is evaluated before everything else so we can't use getExtOrDefault
-  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["RNQuickSQLite_kotlinVersion"]
+  def kotlin_version = rootProject.ext.has("kotlinVersion") ? rootProject.ext.get("kotlinVersion") : project.properties["RNNitroSQLite_kotlinVersion"]
 
   repositories {
     google()
@@ -24,11 +24,11 @@ def isNewArchitectureEnabled() {
 }
 
 def getExtOrDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["RNQuickSQLite_" + name]
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : project.properties["RNNitroSQLite_" + name]
 }
 
 def getExtOrIntegerDefault(name) {
-  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNQuickSQLite_" + name]).toInteger()
+  return rootProject.ext.has(name) ? rootProject.ext.get(name) : (project.properties["RNNitroSQLite_" + name]).toInteger()
 }
 
 def safeAppExtGet(prop, fallback) {
@@ -63,7 +63,7 @@ def resolveReactNativeDirectory() {
     return reactNativePackage.parentFile
   }
 
-  throw new GradleException("[react-native-quick-sqlite] Unable to resolve react-native location in node_modules. Your app should define `REACT_NATIVE_NODE_MODULES_DIR` extension property in `app/build.gradle` with a path to react-native in node_modules.")
+  throw new GradleException("[react-native-nitro-sqlite] Unable to resolve react-native location in node_modules. Your app should define `REACT_NATIVE_NODE_MODULES_DIR` extension property in `app/build.gradle` with a path to react-native in node_modules.")
 }
 
 def reactNativeRootDir = resolveReactNativeDirectory()
@@ -73,7 +73,7 @@ file("$reactNativeRootDir/ReactAndroid/gradle.properties").withInputStream { rea
 def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME")
 def REACT_NATIVE_MINOR_VERSION = REACT_NATIVE_VERSION.startsWith("0.0.0-") ? 1000 : REACT_NATIVE_VERSION.split("\\.")[1].toInteger()
 
-def SQLITE_FLAGS = rootProject.properties['quickSqliteFlags']
+def SQLITE_FLAGS = rootProject.properties['nitroSqliteFlags']
 
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
@@ -82,11 +82,11 @@ if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
 }
 
-apply from: '../nitrogen/generated/android/RNQuickSQLite+autolinking.gradle'
+apply from: '../nitrogen/generated/android/RNNitroSQLite+autolinking.gradle'
 
 android {
   if (supportsNamespace()) {
-    namespace "com.margelo.rnquicksqlite"
+    namespace "com.margelo.rnnitrosqlite"
 
     sourceSets {
       main {
@@ -193,7 +193,7 @@ dependencies {
 if (isNewArchitectureEnabled()) {
   react {
     jsRootDir = file("../src/")
-    libraryName = "RNQuickSQLite"
-    codegenJavaPackageName = "com.margelo.rnquicksqlite"
+    libraryName = "RNNitroSQLite"
+    codegenJavaPackageName = "com.margelo.rnnitrosqlite"
   }
 }

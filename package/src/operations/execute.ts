@@ -1,4 +1,4 @@
-import { HybridQuickSQLite } from '../nitro'
+import { HybridNitroSQLite } from '../nitro'
 import type { NativeQueryResult } from '../specs/NativeQueryResult.nitro'
 import type { QueryResult, SQLiteItem, SQLiteQueryParams } from '../types'
 
@@ -7,7 +7,7 @@ export function execute<Data extends SQLiteItem = never>(
   query: string,
   params?: SQLiteQueryParams
 ): QueryResult<Data> {
-  const nativeResult = HybridQuickSQLite.execute(dbName, query, params)
+  const nativeResult = HybridNitroSQLite.execute(dbName, query, params)
   const result = buildJsQueryResult<Data>(nativeResult)
   return result
 }
@@ -17,7 +17,7 @@ export async function executeAsync<Data extends SQLiteItem = never>(
   query: string,
   params?: SQLiteQueryParams
 ): Promise<QueryResult<Data>> {
-  const nativeResult = await HybridQuickSQLite.executeAsync(
+  const nativeResult = await HybridNitroSQLite.executeAsync(
     dbName,
     query,
     params

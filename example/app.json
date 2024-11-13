@@ -1,10 +1,10 @@
 {
-  "name": "QuickSQLiteExample",
-  "displayName": "QuickSQLite Example",
+  "name": "NitroSQLiteExample",
+  "displayName": "NitroSQLite Example",
   "components": [
     {
-      "appKey": "QuickSQLiteExample",
-      "displayName": "QuickSQLite Example"
+      "appKey": "NitroSQLiteExample",
+      "displayName": "NitroSQLite Example"
     }
   ],
   "resources": {
@@ -15,9 +15,9 @@
     "windows": ["dist/assets", "dist/main.windows.bundle"]
   },
   "android": {
-    "package": "com.margelo.rnquicksqlite.example"
+    "package": "com.margelo.rnnitrosqlite.example"
   },
   "ios": {
-    "bundleIdentifier": "com.margelo.rnquicksqlite.example"
+    "bundleIdentifier": "com.margelo.rnnitrosqlite.example"
   }
 }

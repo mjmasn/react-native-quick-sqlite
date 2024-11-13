@@ -1,4 +1,4 @@
-import { locks, HybridQuickSQLite } from '../nitro'
+import { locks, HybridNitroSQLite } from '../nitro'
 import type {
   QueryResult,
   SQLiteItem,
@@ -25,7 +25,7 @@ export const transaction = (
   fn: (tx: Transaction) => Promise<void> | void
 ): Promise<void> => {
   if (locks[dbName] == null)
-    throw Error(`Quick SQLite Error: No lock found on db: ${dbName}`)
+    throw Error(`Nitro SQLite Error: No lock found on db: ${dbName}`)
 
   let isFinalized = false
 
@@ -36,7 +36,7 @@ export const transaction = (
   ): QueryResult<Data> => {
     if (isFinalized) {
       throw Error(
-        `Quick SQLite Error: Cannot execute query on finalized transaction: ${dbName}`
+        `Nitro SQLite Error: Cannot execute query on finalized transaction: ${dbName}`
       )
     }
     return execute(dbName, query, params)
@@ -48,7 +48,7 @@ export const transaction = (
   ): Promise<QueryResult<Data>> => {
     if (isFinalized) {
       throw Error(
-        `Quick SQLite Error: Cannot execute query on finalized transaction: ${dbName}`
+        `Nitro SQLite Error: Cannot execute query on finalized transaction: ${dbName}`
       )
     }
     return executeAsync(dbName, query, params)
@@ -57,10 +57,10 @@ export const transaction = (
   const commit = () => {
     if (isFinalized) {
       throw Error(
-        `Quick SQLite Error: Cannot execute commit on finalized transaction: ${dbName}`
+        `Nitro SQLite Error: Cannot execute commit on finalized transaction: ${dbName}`
       )
     }
-    const result = HybridQuickSQLite.execute(dbName, 'COMMIT')
+    const result = HybridNitroSQLite.execute(dbName, 'COMMIT')
     isFinalized = true
     return result
   }
@@ -68,17 +68,17 @@ export const transaction = (
   const rollback = () => {
     if (isFinalized) {
       throw Error(
-        `Quick SQLite Error: Cannot execute rollback on finalized transaction: ${dbName}`
+        `Nitro SQLite Error: Cannot execute rollback on finalized transaction: ${dbName}`
       )
     }
-    const result = HybridQuickSQLite.execute(dbName, 'ROLLBACK')
+    const result = HybridNitroSQLite.execute(dbName, 'ROLLBACK')
     isFinalized = true
     return result
   }
 
   async function run() {
     try {
-      await HybridQuickSQLite.executeAsync(dbName, 'BEGIN TRANSACTION')
+      await HybridNitroSQLite.executeAsync(dbName, 'BEGIN TRANSACTION')
 
       await fn({
         commit,

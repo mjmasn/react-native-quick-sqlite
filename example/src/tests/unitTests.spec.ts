@@ -1,12 +1,11 @@
 import Chance from 'chance'
 import type {
-  QuickSQLiteConnection,
+  NitroSQLiteConnection,
   BatchQueryCommand,
-} from 'react-native-quick-sqlite'
+} from 'react-native-nitro-sqlite'
 import { beforeEach, describe, it } from './MochaRNAdapter'
 import chai from 'chai'
 import { testDb as testDbInternal, resetTestDb } from './db'
-import { User } from '../model/User'
 
 function isError(e: unknown): e is Error {
   return e instanceof Error
@@ -16,7 +15,7 @@ const expect = chai.expect
 const chance = new Chance()
 
 export function registerUnitTests() {
-  let testDb: QuickSQLiteConnection
+  let testDb: NitroSQLiteConnection
 
   beforeEach(() => {
     try {
@@ -119,7 +118,7 @@ export function registerUnitTests() {
             'cannot store TEXT value in REAL column User.age'
           )
         } else {
-          expect.fail('Should have thrown a valid QuickSQLiteException')
+          expect.fail('Should have thrown a valid NitroSQLiteException')
         }
       }
     })
@@ -343,7 +342,7 @@ export function registerUnitTests() {
         expect.fail('Should not resolve')
       } catch (e) {
         if (isError(e)) expect(e.message).to.equal('Error from callback')
-        else expect.fail('Should have thrown a valid QuickSQLiteException')
+        else expect.fail('Should have thrown a valid NitroSQLiteException')
       }
     })
 
@@ -359,7 +358,7 @@ export function registerUnitTests() {
       } catch (e) {
         if (isError(e))
           expect(e.message).to.include('no such table: tableThatDoesNotExist')
-        else expect.fail('Should have thrown a valid QuickSQLiteException')
+        else expect.fail('Should have thrown a valid NitroSQLiteException')
       }
     })
 
@@ -431,7 +430,7 @@ export function registerUnitTests() {
           const res = testDb.execute('SELECT * FROM User')
           expect(res.rows?._array).to.eql([])
         } else {
-          expect.fail('Should have thrown a valid QuickSQLiteException')
+          expect.fail('Should have thrown a valid NitroSQLiteException')
         }
       }
     })
@@ -545,7 +544,7 @@ export function registerUnitTests() {
         expect.fail('Should not resolve')
       } catch (e) {
         if (isError(e)) expect(e.message).to.equal('Error from callback')
-        else expect.fail('Should have thrown a valid QuickSQLiteException')
+        else expect.fail('Should have thrown a valid NitroSQLiteException')
       }
     })
 
@@ -562,7 +561,7 @@ export function registerUnitTests() {
       } catch (e) {
         if (isError(e))
           expect(e.message).to.include('no such table: tableThatDoesNotExist')
-        else expect.fail('Should have thrown a valid QuickSQLiteException')
+        else expect.fail('Should have thrown a valid NitroSQLiteException')
       }
     })
 

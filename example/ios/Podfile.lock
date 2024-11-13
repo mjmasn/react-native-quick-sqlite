@@ -1596,7 +1596,7 @@ PODS:
     - React-logger (= 0.76.1)
     - React-perflogger (= 0.76.1)
     - React-utils (= 0.76.1)
-  - RNQuickSQLite (8.2.5):
+  - RNNitroSQLite (8.2.2-nitro.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1733,7 +1733,7 @@ DEPENDENCIES:
   - React-utils (from `../../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCodegen (from `build/generated/ios`)
   - ReactCommon/turbomodule/core (from `../../node_modules/react-native/ReactCommon`)
-  - RNQuickSQLite (from `../../package`)
+  - RNNitroSQLite (from `../../package`)
   - RNScreens (from `../../node_modules/react-native-screens`)
   - Yoga (from `../../node_modules/react-native/ReactCommon/yoga`)
 
@@ -1871,7 +1871,7 @@ EXTERNAL SOURCES:
     :path: build/generated/ios
   ReactCommon:
     :path: "../../node_modules/react-native/ReactCommon"
-  RNQuickSQLite:
+  RNNitroSQLite:
     :path: "../../package"
   RNScreens:
     :path: "../../node_modules/react-native-screens"
@@ -1943,11 +1943,11 @@ SPEC CHECKSUMS:
   React-utils: 5362bd16a9563f9916e7a56c011ddc533507650f
   ReactCodegen: 4e26d365313307cc7c95e693529e539acfb5c64c
   ReactCommon: 422e364463f33e336fc4db196aeb50fd801d90d6
-  RNQuickSQLite: 8ef02913f22a4ca65f44cf826acd0185aa5d6771
+  RNNitroSQLite: 414f19ca9a1a29aa1a1ff7ecfa6bc03c7884e9b1
   RNScreens: e389d6a6a66a4f0d3662924ecae803073ccce8ec
   SocketRocket: d4aabe649be1e368d1318fdf28a022d714d65748
   Yoga: db69236006b8b1c6d55ab453390c882306cbf219
 
-PODFILE CHECKSUM: c6724dc625a6aa9f3f0577b2c2d3f9b39ece8968
+PODFILE CHECKSUM: 27ad3045377187b09e7ab4a604c851aa9838f52d
 
 COCOAPODS: 1.15.2

@@ -1,19 +1,19 @@
 import { transaction } from './operations/transaction'
-import { HybridQuickSQLite } from './nitro'
+import { HybridNitroSQLite } from './nitro'
 import { open } from './operations/session'
-import QuickSQLiteOnLoad from './specs/NativeQuickSQLiteOnLoad'
+import NitroSQLiteOnLoad from './specs/NativeNitroSQLiteOnLoad'
 import { execute, executeAsync } from './operations/execute'
 
 export * from './types'
 export { typeORMDriver } from './typeORM'
 
 export const onInitialized = new Promise<void>((resolve) => {
-  QuickSQLiteOnLoad.onReactApplicationContextReady(resolve)
+  NitroSQLiteOnLoad.onReactApplicationContextReady(resolve)
 })
 
-export const QuickSQLite = {
-  ...HybridQuickSQLite,
-  native: HybridQuickSQLite,
+export const NitroSQLite = {
+  ...HybridNitroSQLite,
+  native: HybridNitroSQLite,
   onInitialized,
   // Overwrite native functions with session-based JS implementations,
   // where the database name can be ommited once opened

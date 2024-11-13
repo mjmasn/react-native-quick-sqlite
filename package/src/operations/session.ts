@@ -1,9 +1,9 @@
-import { locks, HybridQuickSQLite } from '../nitro'
+import { locks, HybridNitroSQLite } from '../nitro'
 import { transaction } from './transaction'
 import type {
   BatchQueryCommand,
-  QuickSQLiteConnection,
-  QuickSQLiteConnectionOptions,
+  NitroSQLiteConnection,
+  NitroSQLiteConnectionOptions,
   QueryResult,
   SQLiteItem,
   SQLiteQueryParams,
@@ -12,16 +12,16 @@ import type {
 import { execute, executeAsync } from './execute'
 
 export function open(
-  options: QuickSQLiteConnectionOptions
-): QuickSQLiteConnection {
+  options: NitroSQLiteConnectionOptions
+): NitroSQLiteConnection {
   openDb(options.name, options.location)
 
   return {
     close: () => close(options.name),
-    delete: () => HybridQuickSQLite.drop(options.name, options.location),
+    delete: () => HybridNitroSQLite.drop(options.name, options.location),
     attach: (dbNameToAttach: string, alias: string, location?: string) =>
-      HybridQuickSQLite.attach(options.name, dbNameToAttach, alias, location),
-    detach: (alias: string) => HybridQuickSQLite.detach(options.name, alias),
+      HybridNitroSQLite.attach(options.name, dbNameToAttach, alias, location),
+    detach: (alias: string) => HybridNitroSQLite.detach(options.name, alias),
     transaction: (fn: (tx: Transaction) => Promise<void> | void) =>
       transaction(options.name, fn),
     execute: <Data extends SQLiteItem = never>(
@@ -33,18 +33,18 @@ export function open(
       params?: SQLiteQueryParams
     ): Promise<QueryResult<Data>> => executeAsync(options.name, query, params),
     executeBatch: (commands: BatchQueryCommand[]) =>
-      HybridQuickSQLite.executeBatch(options.name, commands),
+      HybridNitroSQLite.executeBatch(options.name, commands),
     executeBatchAsync: (commands: BatchQueryCommand[]) =>
-      HybridQuickSQLite.executeBatchAsync(options.name, commands),
+      HybridNitroSQLite.executeBatchAsync(options.name, commands),
     loadFile: (location: string) =>
-      HybridQuickSQLite.loadFile(options.name, location),
+      HybridNitroSQLite.loadFile(options.name, location),
     loadFileAsync: (location: string) =>
-      HybridQuickSQLite.loadFileAsync(options.name, location),
+      HybridNitroSQLite.loadFileAsync(options.name, location),
   }
 }
 
 export function openDb(dbName: string, location?: string) {
-  HybridQuickSQLite.open(dbName, location)
+  HybridNitroSQLite.open(dbName, location)
 
   locks[dbName] = {
     queue: [],
@@ -53,6 +53,6 @@ export function openDb(dbName: string, location?: string) {
 }
 
 export function close(dbName: string) {
-  HybridQuickSQLite.close(dbName)
+  HybridNitroSQLite.close(dbName)
   delete locks[dbName]
 }

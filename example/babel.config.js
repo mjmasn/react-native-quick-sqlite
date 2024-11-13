@@ -11,7 +11,7 @@ module.exports = {
         alias: {
           [pak.name]: path.join(__dirname, '../package', pak.source),
           stream: 'stream-browserify',
-          'react-native-sqlite-storage': 'react-native-quick-sqlite',
+          'react-native-sqlite-storage': 'react-native-nitro-sqlite',
         },
       },
     ],

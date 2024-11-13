@@ -13,7 +13,7 @@ import type {
 } from './types'
 import * as Operations from './operations/session'
 
-interface TypeOrmQuickSQLiteConnection {
+interface TypeOrmNitroSQLiteConnection {
   executeSql: <RowData extends SQLiteItem = never>(
     sql: string,
     params: SQLiteQueryParams | undefined,
@@ -41,13 +41,13 @@ export const typeORMDriver = {
       name: string
       location?: string
     },
-    ok: (db: TypeOrmQuickSQLiteConnection) => void,
+    ok: (db: TypeOrmNitroSQLiteConnection) => void,
     fail: (msg: string) => void
-  ): TypeOrmQuickSQLiteConnection | null => {
+  ): TypeOrmNitroSQLiteConnection | null => {
     try {
       const db = Operations.open(options)
 
-      const connection: TypeOrmQuickSQLiteConnection = {
+      const connection: TypeOrmNitroSQLiteConnection = {
         executeSql: async <RowData extends SQLiteItem = never>(
           sql: string,
           params: SQLiteQueryParams | undefined,
