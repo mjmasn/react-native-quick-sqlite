@@ -82,6 +82,8 @@ if (isNewArchitectureEnabled()) {
   apply plugin: "com.facebook.react"
 }
 
+apply from: '../nitrogen/generated/android/RNQuickSQLite+autolinking.gradle'
+
 android {
   if (supportsNamespace()) {
     namespace "com.margelo.rnquicksqlite"
@@ -183,6 +185,9 @@ dependencies {
   //noinspection GradleDynamicVersion
   implementation "com.facebook.react:react-native:+"
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+  // Add a dependency on NitroModules
+  implementation project(":react-native-nitro-modules")
 }
 
 if (isNewArchitectureEnabled()) {

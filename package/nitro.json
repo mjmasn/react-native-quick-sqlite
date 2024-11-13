@@ -1,0 +1,24 @@
+{
+  "cxxNamespace": [
+    "rnquicksqlite"
+  ],
+  "ios": {
+    "iosModuleName": "RNQuickSQLite"
+  },
+  "android": {
+    "androidNamespace": [
+      "rnquicksqlite"
+    ],
+    "androidCxxLibName": "RNQuickSQLite"
+  },
+  "autolinking": {
+    "QuickSQLite": {
+      "cpp": "HybridQuickSQLite"
+    }
+  },
+  "ignorePaths": [
+    "node_modules",
+    "example",
+    "lib"
+  ]
+}

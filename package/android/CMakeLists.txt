@@ -2,14 +2,10 @@ cmake_minimum_required(VERSION 3.13)
 project(RNQuickSQLite)
 
 set (CMAKE_VERBOSE_MAKEFILE ON)
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 
 add_definitions(
   ${SQLITE_FLAGS}
-)
-
-include_directories(
-  ../cpp
 )
 
 file(GLOB_RECURSE cpp_files RELATIVE ${CMAKE_SOURCE_DIR}
@@ -18,13 +14,24 @@ file(GLOB_RECURSE cpp_files RELATIVE ${CMAKE_SOURCE_DIR}
   "cpp-adapter.cpp"
 )
 
+# Create library "RNQuickSQLite" and add all C++ files to it
 add_library(${CMAKE_PROJECT_NAME} SHARED
   ${cpp_files}
 )
 
+include(${CMAKE_SOURCE_DIR}/../nitrogen/generated/android/RNQuickSQLite+autolinking.cmake)
+
+# Specifies a path to native header files.
+include_directories(
+  ../cpp
+  ../cpp/specs
+  ../cpp/sqlite
+  src/main/cpp
+)
+
 set_target_properties(
   ${CMAKE_PROJECT_NAME} PROPERTIES
-  CXX_STANDARD 17
+  CXX_STANDARD ${CMAKE_CXX_STANDARD}
   CXX_EXTENSIONS OFF
   POSITION_INDEPENDENT_CODE ON
 )

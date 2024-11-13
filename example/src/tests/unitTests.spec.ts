@@ -1,12 +1,12 @@
 import Chance from 'chance'
 import type {
   QuickSQLiteConnection,
-  SQLBatchTuple,
+  BatchQueryCommand,
 } from 'react-native-quick-sqlite'
 import { beforeEach, describe, it } from './MochaRNAdapter'
 import chai from 'chai'
 import { testDb as testDbInternal, resetTestDb } from './db'
-import type { User } from '../model/User'
+import { User } from '../model/User'
 
 function isError(e: unknown): e is Error {
   return e instanceof Error
@@ -424,10 +424,8 @@ export function registerUnitTests() {
         })
       } catch (e) {
         if (isError(e)) {
-          console.log(e.message)
-
           expect(e.message)
-            .to.include('SQL execution error')
+            .to.include('SqlExecutionError')
             .and.to.include('cannot store TEXT value in REAL column User.id')
 
           const res = testDb.execute('SELECT * FROM User')
@@ -578,15 +576,17 @@ export function registerUnitTests() {
       const name2 = chance.name()
       const age2 = chance.integer()
       const networth2 = chance.floating()
-      const commands: SQLBatchTuple[] = [
-        [
-          'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
-          [id1, name1, age1, networth1],
-        ],
-        [
-          'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
-          [id2, name2, age2, networth2],
-        ],
+      const commands: BatchQueryCommand[] = [
+        {
+          query:
+            'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
+          params: [id1, name1, age1, networth1],
+        },
+        {
+          query:
+            'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
+          params: [id2, name2, age2, networth2],
+        },
       ]
 
       testDb.executeBatch(commands)
@@ -612,15 +612,17 @@ export function registerUnitTests() {
       const name2 = chance.name()
       const age2 = chance.integer()
       const networth2 = chance.floating()
-      const commands: SQLBatchTuple[] = [
-        [
-          'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
-          [id1, name1, age1, networth1],
-        ],
-        [
-          'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
-          [id2, name2, age2, networth2],
-        ],
+      const commands: BatchQueryCommand[] = [
+        {
+          query:
+            'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
+          params: [id1, name1, age1, networth1],
+        },
+        {
+          query:
+            'INSERT INTO "User" (id, name, age, networth) VALUES(?, ?, ?, ?)',
+          params: [id2, name2, age2, networth2],
+        },
       ]
 
       await testDb.executeBatchAsync(commands)
