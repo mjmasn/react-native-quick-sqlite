@@ -15,17 +15,23 @@
 
 <div align="center">
   <pre align="center">
-    bun add react-native-nitro-sqlite
+    npm i react-native-nitro-sqlite react-native-nitro-modules
     npx pod-install</pre>
-  <a align="center" href="https://github.com/mrousavy?tab=followers">
-    <img src="https://img.shields.io/github/followers/mrousavy?label=Follow%20%40mrousavy&style=social" />
+  <a align="center" href="https://github.com/margelo">
+    <img src="https://img.shields.io/github/followers/margelo?label=Follow%20%40margelo&style=social" />
   </a>
   <br />
   <a align="center" href="https://twitter.com/margelo_io">
     <img src="https://img.shields.io/twitter/follow/margelo_io?label=Follow%20%40margelo_io&style=social" />
   </a>
+  <a align="center" href="https://bsky.app/profile/margelo.com">
+    <img src="https://img.shields.io/twitter/follow/margelo_com?label=Follow%20%40margelo_com&style=social&logo=bluesky&url=https%3A%2F%2Fbsky.app%2Fprofile%2Fmargelo.com" style="pointer-events: 'none'" />
+  </a>
 </div>
 <br />
+
+> [!NOTE]
+> `react-native-nitro-sqlite` is based on [Nitro modules](https://nitro.margelo.com/). You need to install `react-native-nitro-modules` as a dependency.
 
 Nitro SQLite embeds the latest version of SQLite and provides a low-level JSI-backed API to execute SQL queries.
 
@@ -248,7 +254,7 @@ Starting on Node14 all files that need to be accessed by third-party modules nee
 After you have applied that change, do:
 
 ```sh
-bun patch-package --exclude 'nothing' typeorm
+npx patch-package --exclude 'nothing' typeorm
 ```
 
 Now every time you install your node_modules that line will be added.
@@ -273,7 +279,7 @@ plugins: [
 You will need to install the babel `module-resolver` plugin:
 
 ```sh
-bun add babel-plugin-module-resolver
+npx add babel-plugin-module-resolver
 ```
 
 Finally, you will now be able to start the app without any metro/babel errors (you will also need to follow the instructions on how to setup TypeORM), now we can feed the driver into TypeORM:
