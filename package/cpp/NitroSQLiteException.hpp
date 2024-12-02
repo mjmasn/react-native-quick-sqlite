@@ -34,7 +34,7 @@ public:
   explicit NitroSQLiteException(const std::string& message): NitroSQLiteException(NitroSQLiteExceptionType::UnknownError, message) {}
   NitroSQLiteException(const NitroSQLiteExceptionType& type, const char* message) : NitroSQLiteException(type, std::string(message)) {}
   NitroSQLiteException(const NitroSQLiteExceptionType& type, const std::string& message)
-    : _exceptionString("[react-native-nitro-sqlite] " + typeToString(type) + ": " + message) {}
+    : _exceptionString("[" + typeToString(type) + "] " + message) {}
 
 private:
   const std::string _exceptionString;
