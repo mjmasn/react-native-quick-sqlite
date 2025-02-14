@@ -165,7 +165,7 @@ SQLiteExecuteQueryResult sqliteExecute(const std::string& dbName, const std::str
           switch (column_type) {
 
             case SQLITE_INTEGER: {
-              auto column_value = sqlite3_column_int64(statement, i);
+              auto column_value = sqlite3_column_double(statement, i);
               row[column_name] = column_value;
               break;
             }

@@ -29,13 +29,7 @@ export enum ColumnType {
 /**
  * Represents a value that can be stored in a SQLite database
  */
-export type SQLiteValue =
-  | boolean
-  | number
-  | bigint
-  | string
-  | ArrayBuffer
-  | undefined
+export type SQLiteValue = boolean | number | string | ArrayBuffer | undefined
 
 export type SQLiteItem = Record<string, SQLiteValue>
 
