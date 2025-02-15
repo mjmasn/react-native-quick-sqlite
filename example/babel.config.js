@@ -1,17 +1,17 @@
 const path = require('path');
-const pak = require('../package.json');
+const pak = require('../package/package.json');
 
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
+  presets: ['module:@react-native/babel-preset'],
   plugins: [
-    'nativewind/babel',
     [
       'module-resolver',
       {
+        extensions: ['.tsx', '.ts', '.js', '.json'],
         alias: {
-          [pak.name]: path.join(__dirname, '..', pak.source),
+          [pak.name]: path.join(__dirname, '../package', pak.source),
           stream: 'stream-browserify',
-          "react-native-sqlite-storage": "react-native-quick-sqlite"
+          'react-native-sqlite-storage': 'react-native-nitro-sqlite',
         },
       },
     ],
