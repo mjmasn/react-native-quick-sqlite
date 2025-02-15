@@ -367,12 +367,11 @@ By specifying pre-processor flags, you can enable optional features like FTS5, G
 Add a `post_install` block to your `<PROJECT_ROOT>/ios/Podfile` like so:
 
 ```ruby
-post_install do |installer|
-  installer.pods_project.targets.each do |target|
-    if target.name == "react-native-nitro-sqlite" then
-      target.build_configurations.each do |config|
-        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'SQLITE_ENABLE_FTS5=1'
-      end
+installer.pods_project.targets.each do |target|
+  if target.name == "RNNitroSQLite" then
+    target.build_configurations.each do |config|
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'SQLITE_ENABLE_FTS5=1'
     end
   end
 end
