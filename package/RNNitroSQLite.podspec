@@ -70,7 +70,7 @@ Pod::Spec.new do |s|
   end
 
   if ENV['NITRO_SQLITE_USE_PHONE_VERSION'] == '1' then
-    s.exclude_files = "cpp/sqlite3.c", "cpp/sqlite3.h"
+    s.exclude_files = "cpp/sqlite/sqlite3.c", "cpp/sqlite/sqlite3.h"
     s.library = "sqlite3"
   end
 end
