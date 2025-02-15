@@ -75,7 +75,7 @@ The basic query is **synchronous**, it will block rendering on large operations,
 import { open } from 'react-native-nitro-sqlite';
 
 try {
-  const db = open('myDb.sqlite');
+  const db = open({name: 'myDb.sqlite', location: '<optional_file_location>'})
 
   let { rows } = db.execute('SELECT somevalue FROM sometable');
 
