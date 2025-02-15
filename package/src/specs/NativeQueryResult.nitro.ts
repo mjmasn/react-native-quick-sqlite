@@ -17,7 +17,7 @@ export interface NativeQueryResult
   readonly insertId?: number
 
   /** Query results */
-  readonly results: SQLiteQueryResults
+  readonly results: NativeSQLiteQueryResults
   /** Table metadata */
   readonly metadata?: Record<string, SQLiteQueryColumnMetadata>
 }
@@ -30,7 +30,7 @@ export interface NativeQueryResult
 // TODO: Investigate why this doesn't work with nitrogen
 // export type SQLiteQueryResultRow = Record<string, SQLiteValue>
 // export type SQLiteQueryResults = SQLiteQueryResultRow[]
-export type SQLiteQueryResults = Record<string, SQLiteValue>[]
+export type NativeSQLiteQueryResults = Record<string, SQLiteValue>[]
 
 // TODO: Investigate why this doesn't work with nitrogen
 // export type SQLiteQueryTableMetadata = Record<string, SQLiteQueryColumnMetadata>

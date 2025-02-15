@@ -3,8 +3,8 @@ import { HybridNitroSQLite } from './nitro'
 import { open } from './operations/session'
 import NitroSQLiteOnLoad from './specs/NativeNitroSQLiteOnLoad'
 import { execute, executeAsync } from './operations/execute'
-
-export * from './types'
+import { SQLiteNullValue } from './types'
+export type * from './types'
 export { typeORMDriver } from './typeORM'
 
 export const onInitialized = new Promise<void>((resolve) => {
@@ -25,3 +25,21 @@ export const NitroSQLite = {
 }
 
 export { open } from './operations/session'
+
+let ENABLE_SIMPLE_NULL_HANDLING = false
+export function enableSimpleNullHandling(
+  shouldEnableSimpleNullHandling = true
+) {
+  ENABLE_SIMPLE_NULL_HANDLING = shouldEnableSimpleNullHandling
+}
+export function isSimpleNullHandlingEnabled() {
+  return ENABLE_SIMPLE_NULL_HANDLING
+}
+
+export const NITRO_SQLITE_NULL: SQLiteNullValue = { isNitroSQLiteNull: true }
+export function isNitroSQLiteNull(value: any): value is SQLiteNullValue {
+  if (typeof value === 'object' && 'isNitroSQLiteNull' in value) {
+    return true
+  }
+  return false
+}
